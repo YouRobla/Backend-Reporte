@@ -22,12 +22,12 @@ app.use((req, _res, next) => {
   next();
 });
 
-// Configuración CORS - Permitir todos los dominios
+// Configuración CORS - Permitir cualquier origen
 const corsOptions = {
-  origin: true, // Permitir todos los dominios
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
+  origin: "*", // Permitir cualquier origen
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+  credentials: false, // Deshabilitado para permitir cualquier origen
 };
 
 app.use(cors(corsOptions));
