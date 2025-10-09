@@ -2,7 +2,7 @@ import prisma from "../prisma.js";
 
 export class EvidenceModel {
   static async create(data: any) {
-    return prisma.evidence.create({ 
+    return prisma.evidencia.create({ 
       data,
       include: {
         reporte: {
@@ -30,7 +30,7 @@ export class EvidenceModel {
   }
 
   static async update(id: number, data: any) {
-    return prisma.evidence.update({
+    return prisma.evidencia.update({
       where: { id },
       data,
       include: {
@@ -59,13 +59,13 @@ export class EvidenceModel {
   }
 
   static async delete(id: number) {
-    return prisma.evidence.delete({
+    return prisma.evidencia.delete({
       where: { id }
     });
   }
 
   static async findAll() {
-    return prisma.evidence.findMany({
+    return prisma.evidencia.findMany({
       include: {
         reporte: {
           include: {
@@ -95,7 +95,7 @@ export class EvidenceModel {
   }
 
   static async findById(id: number) {
-    return prisma.evidence.findUnique({
+    return prisma.evidencia.findUnique({
       where: { id },
       include: {
         reporte: {
@@ -123,7 +123,7 @@ export class EvidenceModel {
   }
 
   static async findByReporteId(reporteId: number) {
-    return prisma.evidence.findMany({
+    return prisma.evidencia.findMany({
       where: { reporteId },
       include: {
         reporte: {
@@ -154,7 +154,7 @@ export class EvidenceModel {
   }
 
   static async findByAccionId(accionId: number) {
-    return prisma.evidence.findMany({
+    return prisma.evidencia.findMany({
       where: { accionId },
       include: {
         reporte: {
