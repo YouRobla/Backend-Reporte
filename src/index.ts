@@ -9,20 +9,13 @@ import { profesorRoutes } from "./routes/profesorRoutes.js";
 const app = express();
 app.use(express.json());
 
-// 🌐 CORS dinámico para frontend y dashboard
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  process.env.DASHBOARD_URL
-];
-
+// 🌐 CORS completamente abierto
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
+  // Permitir cualquier origen
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH,OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept");
-  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Credentials", "false");
 
   if (req.method === "OPTIONS") return res.sendStatus(204);
   next();
