@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    /* === Salida del compilador === */
+    "outDir": "dist",
+    "rootDir": "src",
+
+    /* === Módulos y JS moderno === */
+    "target": "ES2022",              // Compatible con Node 18+
+    "module": "NodeNext",            // Obligatorio si usas moduleResolution NodeNext
+    "moduleResolution": "NodeNext",  // Moderno, reemplaza al antiguo "Node"
+    "resolveJsonModule": true,
+
+    /* === Tipos estrictos === */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* === Compatibilidad === */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+
+    /* === Tipos incluidos === */
+    "types": ["node", "express"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
