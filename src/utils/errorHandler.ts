@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { ZodError } from "zod";
-import { Prisma } from "../generated/prisma/index.js";
+import { Prisma } from "@prisma/client";
 import { AppError, ValidationError, NotFoundError, ConflictError, UploadError, CloudinaryError } from "./AppError.js";
 
 export function handleErrors(res: Response, error: any) {
