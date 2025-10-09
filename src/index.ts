@@ -22,20 +22,9 @@ app.use((req, _res, next) => {
   next();
 });
 
-// Configuración CORS para producción
+// Configuración CORS - Permitir todos los dominios
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? [
-        process.env.FRONTEND_FORMULARIO_URL || 'https://formulario-web-senati.vercel.app',
-        process.env.FRONTEND_SISTEMA_URL || 'https://sistema-de-gestion-reportes.vercel.app',
-        process.env.FRONTEND_URL || 'https://tu-dominio.com'
-      ]
-    : [
-        "http://localhost:8080",
-        "http://localhost:5173",
-        "https://formulario-web-senati.vercel.app",
-        "https://sistema-de-gestion-reportes.vercel.app"
-      ],
+  origin: true, // Permitir todos los dominios
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
