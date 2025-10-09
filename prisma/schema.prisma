@@ -35,38 +35,35 @@ model Reporte {
   fecha_fin               DateTime?     // Fecha cuando se marca como "Revisado"
   
   // Relaciones
-  evidencias              Evidencia[]
+  evidencias              Evidence[]
   acciones               Accion[]
   
-  @@map("reportes")
+  @@map("Reporte")
 }
 
 model Accion {
   id          Int      @id @default(autoincrement())
   descripcion String
   reporteId   Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
   
   // Relaciones
   reporte    Reporte     @relation(fields: [reporteId], references: [id], onDelete: Cascade)
-  evidencias Evidencia[]
+  evidencias Evidence[]
   
-  @@map("acciones")
+  @@map("Accion")
 }
 
-model Evidencia {
+model Evidence {
   id        Int      @id @default(autoincrement())
   url       String
   reporteId Int?
   accionId  Int?
-  createdAt DateTime @default(now())
   
   // Relaciones
   reporte Reporte? @relation(fields: [reporteId], references: [id], onDelete: Cascade)
   accion  Accion?  @relation(fields: [accionId], references: [id], onDelete: Cascade)
   
-  @@map("evidencias")
+  @@map("Evidence")
 }
 
 model Profesor {
@@ -79,5 +76,5 @@ model Profesor {
   fecha_registro    DateTime @default(now())
   fecha_actualizacion DateTime @updatedAt
   
-  @@map("profesores")
+  @@map("Profesor")
 }
