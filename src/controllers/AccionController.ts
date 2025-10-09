@@ -161,7 +161,7 @@ export class AccionController {
   }
 
   // Obtener todas las acciones
-  static async findAll(req: Request, res: Response) {
+  static async findAll(_req: Request, res: Response) {
     try {
       const acciones = await AccionModel.findAll();
 

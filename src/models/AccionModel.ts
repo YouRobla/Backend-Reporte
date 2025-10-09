@@ -104,7 +104,7 @@ export class AccionModel {
     // Actualizar el estado del reporte
     return prisma.reporte.update({
       where: { id: reporteId },
-      data: { estado: nuevoEstado }
+      data: { estado: nuevoEstado as any }
     });
   }
 }

@@ -1,5 +1,5 @@
 import cloudinary from '../config/cloudinary.js';
-import { CLOUDINARY_FOLDERS } from '../constants/fileTypes.js';
+// import { CLOUDINARY_FOLDERS } from '../constants/fileTypes.js';
 import { FILE_TYPES } from '../constants/fileTypes.js';
 
 export interface UploadResult {

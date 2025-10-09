@@ -2,18 +2,20 @@ import { Response } from 'express';
 import multer from 'multer';
 
 export class UploadErrorHandler {
-  static handle(error: any, _req: any, res: Response, next: any) {
+  static handle(error: any, _req: any, res: Response, next: any): void {
     if (error instanceof multer.MulterError) {
-      return this.handleMulterError(error, res);
+      this.handleMulterError(error, res);
+      return;
     }
     
     if (error.message.includes('Tipo de archivo no permitido') || 
         error.message.includes('Para reportes solo se permiten') ||
         error.message.includes('Solo se permiten imágenes')) {
-      return res.status(400).json({
+      res.status(400).json({
         error: error.message,
         code: 'INVALID_FILE_TYPE'
       });
+      return;
     }
     
     next(error);

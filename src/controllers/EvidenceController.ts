@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { EvidenceModel } from "../models/EvidenceModel.js";
-import { EvidenceSchema, EvidenceUpdateSchema, EvidenceUploadSchema } from "../schemas/EvidenceSchema.js";
+import { EvidenceSchema, EvidenceUpdateSchema } from "../schemas/EvidenceSchema.js";
 import { handleErrors } from "../utils/errorHandler.js";
 
 export class EvidenceController {
@@ -58,7 +58,7 @@ export class EvidenceController {
   }
 
   // Obtener todas las evidencias
-  static async findAll(req: Request, res: Response) {
+  static async findAll(_req: Request, res: Response) {
     try {
       const evidencias = await EvidenceModel.findAll();
 

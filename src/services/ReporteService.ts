@@ -3,7 +3,7 @@ import { EvidenceModel } from '../models/EvidenceModel.js';
 import { CloudinaryService } from '../upload/CloudinaryService.js';
 import { CLOUDINARY_FOLDERS } from '../constants/fileTypes.js';
 import { ReporteValidator } from '../validators/ReporteValidator.js';
-import { EvidenceValidator } from '../validators/EvidenceValidator.js';
+// import { EvidenceValidator } from '../validators/EvidenceValidator.js';
 
 export interface ReporteWithEvidencias {
   reporte: any;

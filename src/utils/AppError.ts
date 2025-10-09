@@ -16,7 +16,7 @@ export class AppError extends Error {
 
 // Errores específicos del dominio
 export class ValidationError extends AppError {
-  constructor(message: string, field?: string) {
+  constructor(message: string, _field?: string) {
     super(message, 400, 'VALIDATION_ERROR');
     this.name = 'ValidationError';
   }

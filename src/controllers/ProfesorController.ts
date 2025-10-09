@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ProfesorModel } from "../models/ProfesorModel.js";
-import { ProfesorSchema, ProfesorUpdateSchema, ProfesorSearchSchema, ProfesorFiltersSchema } from "../schemas/ProfesorSchema.js";
+import { ProfesorSchema, ProfesorUpdateSchema, ProfesorFiltersSchema } from "../schemas/ProfesorSchema.js";
 import { handleErrors } from "../utils/errorHandler.js";
 
 export class ProfesorController {
@@ -109,7 +109,7 @@ export class ProfesorController {
   }
 
   // Obtener profesores activos (para envío de correos)
-  static async findActivos(req: Request, res: Response) {
+  static async findActivos(_req: Request, res: Response) {
     try {
       const profesores = await ProfesorModel.findActivos();
 
@@ -157,8 +157,8 @@ export class ProfesorController {
         profesor: profesor
       });
     } catch (error) {
-      if (error.message === 'Profesor no encontrado') {
-        return res.status(404).json({ message: error.message });
+      if ((error as any).message === 'Profesor no encontrado') {
+        return res.status(404).json({ message: (error as any).message });
       }
       return handleErrors(res, error);
     }

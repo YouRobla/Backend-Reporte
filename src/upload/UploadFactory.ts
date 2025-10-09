@@ -9,7 +9,7 @@ export class UploadFactory {
     const config = FILE_TYPES[context.toUpperCase() as keyof typeof FILE_TYPES];
     
     const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-      if (config.allowed.includes(file.mimetype)) {
+      if (config.allowed.includes(file.mimetype as any)) {
         cb(null, true);
       } else {
         cb(new Error(config.errorMessage));
