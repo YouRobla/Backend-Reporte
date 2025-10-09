@@ -1,1 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EstadoReporte {
+  SinRevisar
+  EnProceso
+  Revisado
+}
+
+model Reporte {
+  id                      Int           @id @default(autoincrement())
+  numero_registro         String        @unique // Código o correlativo del reporte
+  tipo_documento          String
+  numero_documento        String
+  nombre_completo         String
+  correo_institucional    String
+  nombre_reportante       String
+  area_texto              String // Área en texto libre
+  tipo_reporte            String
+  relacionado_con         String
+  lugar_incidente         String
+  descripcion_observacion String
+  estado                  EstadoReporte @default(SinRevisar)
+  fecha_registro          DateTime      @default(now())
+  fecha_inicio            DateTime?     // Fecha cuando se almacena la primera evidencia
+  fecha_fin               DateTime?     // Fecha cuando se marca como "Revisado"
+  
+  // Relaciones
+  evidencias              Evidencia[]
+  acciones               Accion[]
+  
+  @@map("reportes")
+}
+
+model Accion {
+  id          Int      @id @default(autoincrement())
+  descripcion String
+  reporteId   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relaciones
+  reporte    Reporte     @relation(fields: [reporteId], references: [id], onDelete: Cascade)
+  evidencias Evidencia[]
+  
+  @@map("acciones")
+}
+
+model Evidencia {
+  id        Int      @id @default(autoincrement())
+  url       String
+  reporteId Int?
+  accionId  Int?
+  createdAt DateTime @default(now())
+  
+  // Relaciones
+  reporte Reporte? @relation(fields: [reporteId], references: [id], onDelete: Cascade)
+  accion  Accion?  @relation(fields: [accionId], references: [id], onDelete: Cascade)
+  
+  @@map("evidencias")
+}
+
+model Profesor {
+  id                Int      @id @default(autoincrement())
+  nombre_completo    String
+  correo            String   @unique
+  area              String?
+  cargo             String?
+  activo            Boolean  @default(true)
+  fecha_registro    DateTime @default(now())
+  fecha_actualizacion DateTime @updatedAt
+  
+  @@map("profesores")
+}
