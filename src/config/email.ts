@@ -8,6 +8,13 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL_USER, // Tu email
     pass: process.env.EMAIL_PASS  // Tu contraseña de aplicación
+  },
+  // Configuración para Render
+  connectionTimeout: 60000, // 60 segundos
+  greetingTimeout: 30000,    // 30 segundos
+  socketTimeout: 60000,      // 60 segundos
+  tls: {
+    rejectUnauthorized: false
   }
 });
 
