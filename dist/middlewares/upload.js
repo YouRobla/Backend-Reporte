@@ -28,7 +28,9 @@ const reporteFileFilter = (_req, file, cb) => {
         cb(null, true);
     }
     else {
-        cb(new Error('Para reportes solo se permiten imágenes (JPEG, PNG, GIF, WebP)'));
+        const error = new Error('Para reportes solo se permiten imágenes (JPEG, PNG, GIF, WebP)');
+        error.statusCode = 400;
+        cb(error);
     }
 };
 // Filtro para evidencias generales (imágenes + documentos)
@@ -37,7 +39,9 @@ const evidenceFileFilter = (_req, file, cb) => {
         cb(null, true);
     }
     else {
-        cb(new Error('Solo se permiten imágenes, PDFs, documentos Word, Excel, PowerPoint y archivos de texto'));
+        const error = new Error('Solo se permiten imágenes, PDFs, documentos Word, Excel, PowerPoint y archivos de texto');
+        error.statusCode = 400;
+        cb(error);
     }
 };
 // Configuración de multer para reportes (solo imágenes)
@@ -82,8 +86,16 @@ export const handleUploadError = (error, _req, res, next) => {
             });
         }
     }
-    if (error.message.includes('Tipo de archivo no permitido')) {
+    // Manejar errores de tipo de archivo
+    if (error.message.includes('Para reportes solo se permiten imágenes') ||
+        error.message.includes('Solo se permiten imágenes, PDFs')) {
         return res.status(400).json({
+            error: error.message
+        });
+    }
+    // Manejar errores con statusCode personalizado
+    if (error.statusCode) {
+        return res.status(error.statusCode).json({
             error: error.message
         });
     }

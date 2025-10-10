@@ -54,7 +54,14 @@ export class EmailService {
             text: texto,
             html: html
         };
-        return transporter.sendMail(mailOptions);
+        // Timeout para evitar bloqueos
+        const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Timeout enviando correo')), 30000); // 30 segundos
+        });
+        return Promise.race([
+            transporter.sendMail(mailOptions),
+            timeoutPromise
+        ]);
     }
     // Generar HTML del correo
     static generarHTMLReporte(datos) {
