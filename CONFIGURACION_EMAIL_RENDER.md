@@ -46,9 +46,9 @@ POST https://backend-reporte.onrender.com/api/email/test-email
 Content-Type: application/json
 
 {
-  "to": "destino@ejemplo.com",
-  "subject": "Prueba de Email",
-  "text": "Este es un email de prueba desde Render"
+  "to": "1533824@senati.pe",
+  "subject": "Prueba de Email desde Render",
+  "text": "Este es un email de prueba desde SendGrid"
 }
 ```
 

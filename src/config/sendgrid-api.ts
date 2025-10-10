@@ -1,11 +1,11 @@
-import fetch from 'node-fetch';
+import sgMail from '@sendgrid/mail';
 
 // Estado del email
 let emailConfigurado = false;
 let emailError: string | null = null;
 
-// Función para verificar SendGrid API
-const verificarSendGridAPI = async () => {
+// Configurar SendGrid
+const configurarSendGrid = () => {
   if (!process.env.EMAIL_PASS) {
     emailError = 'API Key de SendGrid no configurada';
     console.log('⚠️ API Key de SendGrid no configurada');
@@ -13,97 +13,81 @@ const verificarSendGridAPI = async () => {
   }
 
   try {
-    console.log('🔄 Verificando SendGrid API...');
+    console.log('🔄 Configurando SendGrid...');
     console.log('📋 API Key:', process.env.EMAIL_PASS ? 'Configurada' : 'No configurada');
     
-    // Verificar API Key con un request simple
-    const response = await fetch('https://api.sendgrid.com/v3/user/account', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${process.env.EMAIL_PASS}`,
-        'Content-Type': 'application/json'
-      },
-      timeout: 10000
-    });
-
-    if (response.ok) {
-      emailConfigurado = true;
-      emailError = null;
-      console.log('✅ SendGrid API configurado correctamente');
-      console.log('📧 Usando API REST de SendGrid');
-    } else {
-      throw new Error(`API Key inválida: ${response.status} ${response.statusText}`);
-    }
-
+    // Configurar la API Key
+    sgMail.setApiKey(process.env.EMAIL_PASS);
+    
+    emailConfigurado = true;
+    emailError = null;
+    console.log('✅ SendGrid configurado correctamente');
+    console.log('📧 Usando librería oficial @sendgrid/mail');
+    
   } catch (error) {
     emailConfigurado = false;
     emailError = (error as Error).message;
-    console.log('❌ Error configurando SendGrid API:', emailError);
+    console.log('❌ Error configurando SendGrid:', emailError);
     console.log('ℹ️ El sistema funcionará sin envío de correos');
   }
 };
 
-// Función para enviar email usando SendGrid API
+// Función para enviar email usando SendGrid oficial
 export const sendEmailAPI = async (mailOptions: any): Promise<any> => {
   if (!emailConfigurado) {
-    throw new Error('SendGrid API no configurado: ' + (emailError || 'Error desconocido'));
+    throw new Error('SendGrid no configurado: ' + (emailError || 'Error desconocido'));
   }
 
   try {
-    console.log('📧 Enviando email con SendGrid API...');
+    console.log('📧 Enviando email con SendGrid...');
     
-    const emailData = {
-      personalizations: [{
-        to: [{ email: mailOptions.to }],
-        subject: mailOptions.subject
-      }],
-      from: { 
+    const msg = {
+      to: mailOptions.to,
+      from: {
         email: process.env.EMAIL_FROM || '1533824@senati.pe',
         name: process.env.EMAIL_NAME || 'Sistema de Reportes SENATI'
       },
-      content: [{
-        type: 'text/plain',
-        value: mailOptions.text
-      }]
+      subject: mailOptions.subject,
+      text: mailOptions.text,
+      html: mailOptions.html
     };
 
-    // Agregar HTML si existe
-    if (mailOptions.html) {
-      emailData.content.push({
-        type: 'text/html',
-        value: mailOptions.html
-      });
-    }
-
-    const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.EMAIL_PASS}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(emailData),
-      timeout: 30000
+    console.log('📋 Configuración del email:', {
+      to: msg.to,
+      from: msg.from,
+      subject: msg.subject,
+      hasText: !!msg.text,
+      hasHtml: !!msg.html
     });
 
-    if (response.ok) {
-      console.log('✅ Email enviado con SendGrid API');
-      return { messageId: response.headers.get('x-message-id') || 'N/A' };
-    } else {
-      const errorData = await response.text();
-      throw new Error(`SendGrid API error: ${response.status} ${response.statusText} - ${errorData}`);
-    }
+    const response = await sgMail.send(msg);
+    
+    console.log('✅ Email enviado con SendGrid');
+    console.log('📧 Response:', response[0]?.statusCode);
+    
+    return { 
+      messageId: response[0]?.headers?.['x-message-id'] || 'N/A',
+      statusCode: response[0]?.statusCode
+    };
 
-  } catch (error) {
-    console.error('❌ Error enviando email con SendGrid API:', (error as Error).message);
+  } catch (error: any) {
+    console.error('❌ Error enviando email con SendGrid:', error.message);
+    
+    if (error.response) {
+      console.error('📋 Detalles del error:', {
+        status: error.response.status,
+        body: error.response.body,
+        headers: error.response.headers
+      });
+    }
+    
     throw error;
   }
 };
 
-// Verificar API de forma asíncrona
+// Configurar SendGrid de forma asíncrona
 setImmediate(() => {
-  verificarSendGridAPI().catch(error => {
-    console.error('Error verificando SendGrid API:', error);
-  });
+  configurarSendGrid();
 });
 
 // Función para verificar si el email está disponible
