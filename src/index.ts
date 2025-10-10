@@ -7,6 +7,7 @@ import { uploadRoutes } from "./routes/uploadRoutes.js";
 import { reporteCompletoRoutes } from "./routes/reporteCompletoRoutes.js";
 import { profesorRoutes } from "./routes/profesorRoutes.js";
 import { metricasRoutes } from "./routes/metricasRoutes.js";
+import emailTestRoutes from "./routes/emailTestRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/reportes", reporteCompletoRoutes);
 app.use("/api/profesores", profesorRoutes);
 app.use("/api/metricas", metricasRoutes);
+app.use("/api/email", emailTestRoutes);
 
 // Health check
 app.get("/health", (_req, res) => {
