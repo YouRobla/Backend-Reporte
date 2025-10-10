@@ -1,4 +1,4 @@
-# 📧 Configuración de Email en Render
+# 📧 Configuración de Email en Render - SendGrid
 
 ## 🚀 Pasos para activar emails en Render
 
@@ -9,26 +9,28 @@ Ve a tu dashboard de Render → Tu servicio → Environment → Add Environment 
 Agrega estas variables:
 
 ```bash
-EMAIL_HOST=smtp.gmail.com
+EMAIL_HOST=smtp.sendgrid.net
 EMAIL_PORT=587
-EMAIL_USER=tu-email@gmail.com
-EMAIL_PASS=tu-contraseña-de-aplicación
+EMAIL_USER=apikey
+EMAIL_PASS=tu-api-key-de-sendgrid
 ```
 
-### 2. **Configurar Gmail para Aplicaciones**
+### 2. **Configurar SendGrid**
 
-#### Opción A: Contraseña de Aplicación (Recomendado)
-1. Ve a tu cuenta de Google → Seguridad
-2. Activa "Verificación en 2 pasos"
-3. Ve a "Contraseñas de aplicaciones"
-4. Genera una nueva contraseña para "Mail"
-5. Usa esa contraseña en `EMAIL_PASS`
+#### Paso 1: Crear cuenta en SendGrid
+1. Ve a [sendgrid.com](https://sendgrid.com)
+2. Crea cuenta gratuita (100 emails/día gratis)
+3. Verifica tu email
 
-#### Opción B: OAuth2 (Avanzado)
-Si prefieres OAuth2, necesitarás configurar:
-- `EMAIL_CLIENT_ID`
-- `EMAIL_CLIENT_SECRET`
-- `EMAIL_REFRESH_TOKEN`
+#### Paso 2: Generar API Key
+1. En SendGrid → Settings → API Keys
+2. Create API Key → Full Access
+3. Copia la API Key
+
+#### Paso 3: Configurar Remitente
+1. En SendGrid → Senders → Create New Sender
+2. Completa la información del remitente
+3. Verifica el email de confirmación
 
 ### 3. **Probar la Configuración**
 
