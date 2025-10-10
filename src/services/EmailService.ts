@@ -1,4 +1,4 @@
-import transporter from '../config/email.js';
+import { sendEmail, isEmailAvailable, getEmailError } from '../config/email.js';
 import { ProfesorModel } from '../models/ProfesorModel.js';
 
 export class EmailService {
@@ -13,38 +13,57 @@ export class EmailService {
     }
   }
 
-  // Enviar correo a todos los profesores
-  static async enviarCorreoATodos(datosReporte: any) {
-    try {
-      const correos = await this.getCorreosProfesores();
-      
-      if (correos.length === 0) {
-        console.log('⚠️ No hay profesores activos para enviar correos');
-        return { enviados: 0, errores: 0 };
-      }
-
-      let enviados = 0;
-      let errores = 0;
-
-      // Enviar correo a cada profesor
-      const promesasEnvio = correos.map(async (correo) => {
-        try {
-          await this.enviarCorreoIndividual(correo, datosReporte);
-          enviados++;
-          console.log(`✅ Correo enviado a: ${correo}`);
-        } catch (error) {
-          errores++;
-          console.error(`❌ Error enviando a ${correo}:`, error);
+  // Enviar correo a todos los profesores usando callbacks nativos
+  static enviarCorreoATodos(datosReporte: any): Promise<any> {
+    return new Promise(async (resolve) => {
+      try {
+        // Verificar si el email está disponible
+        if (!isEmailAvailable()) {
+          console.log('⚠️ Email no disponible:', getEmailError());
+          return resolve({ enviados: 0, errores: 0, total: 0, mensaje: 'Email no configurado' });
         }
-      });
 
-      await Promise.all(promesasEnvio);
+        const correos = await this.getCorreosProfesores();
+        
+        if (correos.length === 0) {
+          console.log('⚠️ No hay profesores activos para enviar correos');
+          return resolve({ enviados: 0, errores: 0, total: 0, mensaje: 'No hay profesores activos' });
+        }
 
-      return { enviados, errores, total: correos.length };
-    } catch (error) {
-      console.error('Error en envío masivo de correos:', error);
-      return { enviados: 0, errores: 1, total: 0 };
-    }
+        let enviados = 0;
+        let errores = 0;
+        let completados = 0;
+
+        // Función para procesar cada correo
+        const procesarCorreo = async (correo: string) => {
+          try {
+            await this.enviarCorreoIndividual(correo, datosReporte);
+            enviados++;
+            console.log(`✅ Correo enviado a: ${correo}`);
+          } catch (error) {
+            errores++;
+            console.error(`❌ Error enviando a ${correo}:`, (error as Error).message);
+          } finally {
+            completados++;
+            
+            // Verificar si todos los correos han sido procesados
+            if (completados === correos.length) {
+              console.log(`📧 Resumen de envío: ${enviados} enviados, ${errores} errores de ${correos.length} total`);
+              resolve({ enviados, errores, total: correos.length });
+            }
+          }
+        };
+
+        // Procesar todos los correos de forma asíncrona
+        correos.forEach(correo => {
+          setImmediate(() => procesarCorreo(correo));
+        });
+
+      } catch (error) {
+        console.error('Error en envío masivo de correos:', error);
+        resolve({ enviados: 0, errores: 1, total: 0, mensaje: 'Error en envío masivo' });
+      }
+    });
   }
 
   // Enviar correo individual
@@ -62,15 +81,8 @@ export class EmailService {
       html: html
     };
 
-    // Timeout para evitar bloqueos
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Timeout enviando correo')), 30000); // 30 segundos
-    });
-
-    return Promise.race([
-      transporter.sendMail(mailOptions),
-      timeoutPromise
-    ]);
+    // Usar la función optimizada de envío
+    return sendEmail(mailOptions);
   }
 
   // Generar HTML del correo
