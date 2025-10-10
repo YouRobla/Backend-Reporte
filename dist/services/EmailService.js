@@ -1,4 +1,4 @@
-import { sendEmail, isEmailAvailable, getEmailError } from '../config/email.js';
+import { sendEmailAPI, isEmailAvailable, getEmailError } from '../config/sendgrid-api.js';
 import { ProfesorModel } from '../models/ProfesorModel.js';
 export class EmailService {
     // Obtener todos los correos de profesores activos
@@ -72,8 +72,8 @@ export class EmailService {
             text: texto,
             html: html
         };
-        // Usar la función optimizada de envío
-        return sendEmail(mailOptions);
+        // Usar la función optimizada de envío con SendGrid API
+        return sendEmailAPI(mailOptions);
     }
     // Generar HTML del correo
     static generarHTMLReporte(datos) {

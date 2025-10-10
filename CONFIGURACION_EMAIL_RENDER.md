@@ -9,10 +9,9 @@ Ve a tu dashboard de Render → Tu servicio → Environment → Add Environment 
 Agrega estas variables:
 
 ```bash
-EMAIL_HOST=smtp.sendgrid.net
-EMAIL_PORT=587
-EMAIL_USER=apikey
 EMAIL_PASS=tu-api-key-de-sendgrid
+EMAIL_FROM=1533824@senati.pe
+EMAIL_NAME=Sistema de Reportes SENATI
 ```
 
 ### 2. **Configurar SendGrid**
