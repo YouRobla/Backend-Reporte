@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { sendEmail, isEmailAvailable, getEmailError } from '../config/email.js';
+import { sendEmailAPI, isEmailAvailable, getEmailError } from '../config/sendgrid-api.js';
 const router = Router();
 // Endpoint para probar el email
 router.post('/test-email', async (req, res) => {
@@ -27,7 +27,7 @@ router.post('/test-email', async (req, res) => {
             html: `<p>${text}</p>`
         };
         console.log('📧 Enviando email de prueba...');
-        const result = await sendEmail(mailOptions);
+        const result = await sendEmailAPI(mailOptions);
         console.log('✅ Email de prueba enviado exitosamente');
         return res.json({
             success: true,
