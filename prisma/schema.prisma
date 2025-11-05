@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:root@localhost:5432/Reportes_db?schema=public"
 }
 
 enum EstadoReporte {
@@ -19,16 +19,13 @@ enum EstadoReporte {
 model Reporte {
   id                      Int           @id @default(autoincrement())
   numero_registro         String        @unique // Código o correlativo del reporte
-  tipo_documento          String
-  numero_documento        String
-  nombre_completo         String
-  correo_institucional    String
-  nombre_reportante       String
-  area_texto              String // Área en texto libre
-  tipo_reporte            String
-  relacionado_con         String
-  lugar_incidente         String
-  descripcion_observacion String
+  tipo_documento          String        // DNI, Pasaporte, etc.
+  numero_documento        String        // Número del documento
+  sede                    String        // Sede (ej: "CFP HUANCAYO")
+  tipo_reporte            String        // Acto Subestándar, Condición Subestándar, etc.
+  lugar_incidente         String        // Ubicación específica donde ocurrió
+  descripcion_observacion String        // Descripción detallada del incidente
+  acciones_tomadas        String?       // Acciones tomadas al momento (opcional)
   estado                  EstadoReporte @default(SinRevisar)
   fecha_registro          DateTime      @default(now())
   fecha_inicio            DateTime?     // Fecha cuando se almacena la primera evidencia

@@ -195,7 +195,8 @@ export class ReporteCompletoController {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
-      const nombre = req.query.nombre as string;
+      const sede = req.query.sede as string;
+      const tipo_reporte = req.query.tipo_reporte as string;
       const estado = req.query.estado as string;
       
       // Validar parámetros
@@ -214,8 +215,9 @@ export class ReporteCompletoController {
       }
 
       // Construir filtros
-      const filters: { nombre?: string, estado?: string } = {};
-      if (nombre) filters.nombre = nombre;
+      const filters: { sede?: string, tipo_reporte?: string, estado?: string } = {};
+      if (sede) filters.sede = sede;
+      if (tipo_reporte) filters.tipo_reporte = tipo_reporte;
       if (estado) filters.estado = estado;
 
       const result = await ReporteModel.findAll(page, limit, filters);

@@ -4,14 +4,14 @@ import { uploadReportes, handleUploadError } from "../middlewares/upload.js";
 
 export const reporteCompletoRoutes = Router();
 
-// Crear reporte con evidencias (OBLIGATORIO - solo imágenes)
-reporteCompletoRoutes.post("/", uploadReportes.array('evidencias', 10), handleUploadError, ReporteCompletoController.createReporteConEvidencias);
+// Crear reporte con evidencias (OBLIGATORIO - solo imágenes, máximo 3)
+reporteCompletoRoutes.post("/", uploadReportes.array('evidencias', 3), handleUploadError, ReporteCompletoController.createReporteConEvidencias);
 
 // Crear reporte básico (solo datos, sin evidencias) - DEPRECATED
 reporteCompletoRoutes.post("/basico", ReporteCompletoController.createReporteBasico);
 
-// Agregar evidencias a un reporte existente (solo imágenes)
-reporteCompletoRoutes.post("/:reporteId/evidencias", uploadReportes.array('evidencias', 10), handleUploadError, ReporteCompletoController.agregarEvidenciasAReporte);
+// Agregar evidencias a un reporte existente (solo imágenes, máximo 3)
+reporteCompletoRoutes.post("/:reporteId/evidencias", uploadReportes.array('evidencias', 3), handleUploadError, ReporteCompletoController.agregarEvidenciasAReporte);
 
 // Obtener todos los reportes con paginación y filtros
 reporteCompletoRoutes.get("/", ReporteCompletoController.findAll);

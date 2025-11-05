@@ -55,7 +55,7 @@ export const uploadReportes = multer({
   fileFilter: reporteFileFilter,
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB máximo
-    files: 5, // Máximo 5 archivos por request
+    files: 3, // Máximo 3 archivos por request
     fieldSize: 10 * 1024 * 1024, // 10MB para campos de texto
     fieldNameSize: 100, // 100 caracteres máximo para nombres de campo
     parts: 20 // Máximo 20 partes en el formulario
@@ -85,7 +85,7 @@ export const handleUploadError = (error: any, _req: Request, res: any, next: any
     }
     if (error.code === 'LIMIT_FILE_COUNT') {
       return res.status(400).json({
-        error: 'Demasiados archivos. Máximo 5 archivos por request.'
+        error: 'Demasiados archivos. Máximo 3 archivos por request.'
       });
     }
     if (error.code === 'LIMIT_UNEXPECTED_FILE') {
