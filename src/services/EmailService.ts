@@ -140,23 +140,18 @@ export class EmailService {
           <h3>👤 Información del Reportante</h3>
           
           <div class="field">
-            <span class="label">Nombre Completo:</span>
-            <span class="value">${datos.nombre_completo}</span>
+            <span class="label">Tipo de Documento:</span>
+            <span class="value">${datos.tipo_documento}</span>
           </div>
           
           <div class="field">
-            <span class="label">Correo Institucional:</span>
-            <span class="value">${datos.correo_institucional}</span>
+            <span class="label">Número de Documento:</span>
+            <span class="value">${datos.numero_documento}</span>
           </div>
           
           <div class="field">
-            <span class="label">Nombre del Reportante:</span>
-            <span class="value">${datos.nombre_reportante}</span>
-          </div>
-          
-          <div class="field">
-            <span class="label">Área:</span>
-            <span class="value">${datos.area_texto}</span>
+            <span class="label">Sede:</span>
+            <span class="value">${datos.sede}</span>
           </div>
 
           <h3>📝 Detalles del Reporte</h3>
@@ -167,14 +162,18 @@ export class EmailService {
           </div>
           
           <div class="field">
-            <span class="label">Relacionado con:</span>
-            <span class="value">${datos.relacionado_con}</span>
-          </div>
-          
-          <div class="field">
             <span class="label">Lugar del Incidente:</span>
             <span class="value">${datos.lugar_incidente}</span>
           </div>
+          
+          ${datos.acciones_tomadas ? `
+          <div class="field">
+            <span class="label">Acciones Tomadas:</span>
+            <div class="value" style="margin-top: 10px; padding: 10px; background: white; border-left: 4px solid #27ae60;">
+              ${datos.acciones_tomadas}
+            </div>
+          </div>
+          ` : ''}
           
           <div class="field">
             <span class="label">Descripción:</span>
@@ -216,16 +215,16 @@ INFORMACIÓN DEL REPORTE:
 - Fecha de Registro: ${new Date(datos.fecha_registro).toLocaleString('es-ES')}
 
 INFORMACIÓN DEL REPORTANTE:
-- Nombre Completo: ${datos.nombre_completo}
-- Correo Institucional: ${datos.correo_institucional}
-- Nombre del Reportante: ${datos.nombre_reportante}
-- Área: ${datos.area_texto}
+- Tipo de Documento: ${datos.tipo_documento}
+- Número de Documento: ${datos.numero_documento}
+- Sede: ${datos.sede}
 
 DETALLES DEL REPORTE:
 - Tipo de Reporte: ${datos.tipo_reporte}
-- Relacionado con: ${datos.relacionado_con}
 - Lugar del Incidente: ${datos.lugar_incidente}
 - Descripción: ${datos.descripcion_observacion}
+
+${datos.acciones_tomadas ? `- Acciones Tomadas: ${datos.acciones_tomadas}` : ''}
 
 ${datos.evidencias && datos.evidencias.length > 0 ? `EVIDENCIAS: Este reporte incluye ${datos.evidencias.length} evidencia(s) adjunta(s).` : ''}
 

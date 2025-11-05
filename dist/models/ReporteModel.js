@@ -43,10 +43,16 @@ export class ReporteModel {
         const skip = (page - 1) * limit;
         // Construir filtros dinámicamente
         const whereClause = {};
-        if (filters.nombre) {
-            whereClause.nombre_completo = {
-                contains: filters.nombre,
+        if (filters.sede) {
+            whereClause.sede = {
+                contains: filters.sede,
                 mode: 'insensitive' // Búsqueda insensible a mayúsculas/minúsculas
+            };
+        }
+        if (filters.tipo_reporte) {
+            whereClause.tipo_reporte = {
+                contains: filters.tipo_reporte,
+                mode: 'insensitive'
             };
         }
         if (filters.estado) {
@@ -84,7 +90,8 @@ export class ReporteModel {
                 hasPrev: page > 1
             },
             filters: {
-                nombre: filters.nombre || null,
+                sede: filters.sede || null,
+                tipo_reporte: filters.tipo_reporte || null,
                 estado: filters.estado || null
             }
         };

@@ -161,7 +161,8 @@ export class ReporteCompletoController {
         try {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const nombre = req.query.nombre;
+            const sede = req.query.sede;
+            const tipo_reporte = req.query.tipo_reporte;
             const estado = req.query.estado;
             // Validar parámetros
             if (page < 1) {
@@ -178,8 +179,10 @@ export class ReporteCompletoController {
             }
             // Construir filtros
             const filters = {};
-            if (nombre)
-                filters.nombre = nombre;
+            if (sede)
+                filters.sede = sede;
+            if (tipo_reporte)
+                filters.tipo_reporte = tipo_reporte;
             if (estado)
                 filters.estado = estado;
             const result = await ReporteModel.findAll(page, limit, filters);

@@ -117,29 +117,29 @@ export class MetricasController {
       
       // Agrupar por tipo de reporte
       const tiposReporte: { [key: string]: number } = {};
-      const areas: { [key: string]: number } = {};
-      const relacionadosCon: { [key: string]: number } = {};
+      const sedes: { [key: string]: number } = {};
+      const lugaresIncidente: { [key: string]: number } = {};
 
       reportes.reportes.forEach(reporte => {
         // Contar tipos de reporte
         tiposReporte[reporte.tipo_reporte] = (tiposReporte[reporte.tipo_reporte] || 0) + 1;
         
-        // Contar áreas
-        areas[reporte.area_texto] = (areas[reporte.area_texto] || 0) + 1;
+        // Contar sedes (reemplaza area_texto)
+        sedes[reporte.sede] = (sedes[reporte.sede] || 0) + 1;
         
-        // Contar relacionados con
-        relacionadosCon[reporte.relacionado_con] = (relacionadosCon[reporte.relacionado_con] || 0) + 1;
+        // Contar lugares de incidente
+        lugaresIncidente[reporte.lugar_incidente] = (lugaresIncidente[reporte.lugar_incidente] || 0) + 1;
       });
 
       return res.json({
         tiposReporte: Object.entries(tiposReporte)
           .map(([tipo, cantidad]) => ({ tipo, cantidad }))
           .sort((a, b) => b.cantidad - a.cantidad),
-        areas: Object.entries(areas)
-          .map(([area, cantidad]) => ({ area, cantidad }))
+        sedes: Object.entries(sedes)
+          .map(([sede, cantidad]) => ({ sede, cantidad }))
           .sort((a, b) => b.cantidad - a.cantidad),
-        relacionadosCon: Object.entries(relacionadosCon)
-          .map(([relacionado, cantidad]) => ({ relacionado, cantidad }))
+        lugaresIncidente: Object.entries(lugaresIncidente)
+          .map(([lugar, cantidad]) => ({ lugar, cantidad }))
           .sort((a, b) => b.cantidad - a.cantidad)
       });
     } catch (error) {

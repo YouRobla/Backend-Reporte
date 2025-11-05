@@ -34,4 +34,7 @@ app.get("/health", (_req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+    console.log(`🌐 URL: http://localhost:${PORT}`);
+    console.log(`📧 Email test: http://localhost:${PORT}/api/email/test-email`);
+    console.log(`🏥 Health check: http://localhost:${PORT}/health`);
 });
